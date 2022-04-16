@@ -17,21 +17,62 @@ ConvertTo-DistinguishedName [-String] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Converts a string distinguished name into a more usable object. Not yet compliant
+with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt).
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> "CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com",[pscustomobject]@{distinguishedname = "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com"}  | ConvertTo-DistinguishedName
+
+Name              : CN=Test User
+Parent            : OU=My Users
+ParentPath        : OU=My Users,CN=Users,DC=Example,DC=com
+DistinguishedName : CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence       : {CN=Test User, OU=My Users, CN=Users, DC=Example…}
+
+Name              : CN=Paul Dedula
+Parent            : OU=My Users
+ParentPath        : OU=My Users,CN=Users,DC=Example,DC=com
+DistinguishedName : CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence       : {CN=Paul Dedula, OU=My Users, CN=Users, DC=Example…}
 ```
 
-{{ Add example description here }}
+Converts the input string or input object that has a distinguished name property to a distinguishedname object.
+
+
+### Example 2
+```powershell
+PS C:\> import-module Tools.ActiveDirectory
+PS C:\> ConvertTo-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" | Select-Object -ExpandProperty RDNSequence
+
+type value       typeString             RelativeDistinguishedName
+---- -----       ----------             -------------------------
+CN   Paul Dedula commonName             CN=Paul Dedula
+OU   My Users    organizationalUnitName OU=My Users
+CN   Users       commonName             CN=Users
+DC   Example     domainComponent        DC=Example
+DC   com         domainComponent        DC=com
+```
+
+Access the entire relative distinguished name sequence array.
+
+### Example 3
+```powershell
+PS C:\> using module Tools.ActiveDirectory
+PS C:\> $DNObject = [DistinguishedName]"CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com"
+PS C:\> $DNObject.ParentPath
+
+OU=My Users,CN=Users,DC=Example,DC=com
+```
+
+Optionally, import and use the custom class directly with a `using` statement.
 
 ## PARAMETERS
 
 ### -String
-{{ Fill String Description }}
+The input string or input object that has a distinguished name property
 
 ```yaml
 Type: String[]
@@ -54,7 +95,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### DistinguishedName[]
 ## NOTES
+Special character support not tested.
+Not yet compliant with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt)
 
 ## RELATED LINKS
