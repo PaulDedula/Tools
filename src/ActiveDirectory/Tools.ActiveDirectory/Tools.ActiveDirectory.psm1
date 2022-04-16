@@ -63,7 +63,7 @@ class DistinguishedName {
     }
 }
 
-function ConvertTo-DistinguishedName {
+function ConvertFrom-DistinguishedName {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
