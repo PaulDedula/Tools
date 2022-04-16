@@ -68,7 +68,7 @@ function ConvertFrom-DistinguishedName {
     param (
         [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
         [alias("DistinguishedName")]
-        [string[]]$String
+        [string[]]$InputObject
     )
     Process {
         foreach ($s in $String) {
