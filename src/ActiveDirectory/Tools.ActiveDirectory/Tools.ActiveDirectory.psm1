@@ -71,7 +71,7 @@ function ConvertFrom-DistinguishedName {
         [string[]]$InputObject
     )
     Process {
-        foreach ($s in $String) {
+        foreach ($s in $InputObject) {
             [DistinguishedName]::new($s)
         }
     }
