@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# ConvertTo-DistinguishedName
+# ConvertFrom-DistinguishedName
 
 ## SYNOPSIS
 Converts a string distinguished name into a more usable object.
@@ -13,7 +13,7 @@ Converts a string distinguished name into a more usable object.
 ## SYNTAX
 
 ```
-ConvertTo-DistinguishedName [-String] <String[]> [<CommonParameters>]
+ConvertFrom-DistinguishedName [-String] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,7 +24,7 @@ with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt).
 
 ### Example 1
 ```powershell
-PS C:\> "CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com",[pscustomobject]@{distinguishedname = "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com"}  | ConvertTo-DistinguishedName
+PS C:\> "CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com",[pscustomobject]@{distinguishedname = "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com"}  | ConvertFrom-DistinguishedName
 
 Name              : CN=Test User
 Parent            : OU=My Users
@@ -45,7 +45,7 @@ Converts the input string or input object that has a distinguished name property
 ### Example 2
 ```powershell
 PS C:\> import-module Tools.ActiveDirectory
-PS C:\> ConvertTo-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" | Select-Object -ExpandProperty RDNSequence
+PS C:\> ConvertFrom-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" | Select-Object -ExpandProperty RDNSequence
 
 type value       typeString             RelativeDistinguishedName
 ---- -----       ----------             -------------------------
