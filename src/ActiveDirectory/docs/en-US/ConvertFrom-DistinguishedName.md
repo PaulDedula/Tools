@@ -69,9 +69,23 @@ OU=My Users,CN=Users,DC=Example,DC=com
 
 Optionally, import and use the custom class directly with a `using` statement.
 
+### Example 4
+```powershell
+PS C:\> $DNObject = ConvertFrom-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" 
+PS C:\> switch ($DNObject.RDNSequence[-1].type) {
+    OU { "I run when the RDN type is an organization unit" }
+    DC { "I run when the RDN type is a domainComponent" }
+    Default {}
+}
+
+"I run when the RDN type is a domainComponent"
+```
+
+Perform a specific action based on the relative name type.
+
 ## PARAMETERS
 
-### -String
+### -InputObject
 The input string or input object that has a distinguished name property
 
 ```yaml
