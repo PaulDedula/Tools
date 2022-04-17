@@ -4,7 +4,7 @@ class RelativeDistinguishedName {
     [string]$typeString
     [string]$RelativeDistinguishedName
     hidden [int]$depth = 0
-    hidden [hashtable]$dictRDN = @{
+    hidden static [hashtable]$dictRDN = @{
         DC     = 'domainComponent'
         CN     = 'commonName'
         OU     = 'organizationalUnitName'
