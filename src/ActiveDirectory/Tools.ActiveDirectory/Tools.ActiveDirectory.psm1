@@ -36,12 +36,15 @@ class RelativeDistinguishedName {
     }
 }
 
+
 class DistinguishedName {
     [RelativeDistinguishedName]$Name
     [RelativeDistinguishedName]$Parent
     [string]$ParentPath
     [string]$DistinguishedName
     [RelativeDistinguishedName[]]$RDNSequence
+    hidden [int]$LenRDNSequence
+    hidden [int[]]$rangeRDNSequnce
     DistinguishedName () {}
     DistinguishedName ([string]$inputDN) {
         $this.DistinguishedName = $inputDN
@@ -56,7 +59,17 @@ class DistinguishedName {
             $this.Parent = $dnList[0]
             $this.ParentPath = [string]::Join(',', $dnList)
         }
-
+        $this.LenRDNSequence = $this.RDNSequence.GetUpperBound(0)
+        $this.rangeRDNSequnce = (0..$this.LenRDNSequence)
+    }
+    [string] SubPath ([int]$start) {
+        if (-not($start -in $this.rangeRDNSequnce)) {throw "Starting position out of range"}
+        return [string]::Join(',',$this.RDNSequence[$start..$this.LenRDNSequence])
+    }
+    [string] SubPath ([int]$start, [int]$Stop) {
+        if (-not($start -in $this.rangeRDNSequnce)) {throw "Starting position out of range"}
+        if (-not($Stop -in $this.rangeRDNSequnce)) {throw "Terminating position out of range"}
+        return [string]::Join(',',$this.RDNSequence[$start..$Stop])
     }
     [string] ToString () {
         return $this.DistinguishedName
