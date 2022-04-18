@@ -4,7 +4,7 @@ class RelativeDistinguishedName {
     [string]$typeString
     [string]$RelativeDistinguishedName
     hidden [int]$depth = 0
-    hidden static [hashtable]$dictRDN = @{
+    static [hashtable]$dictRDN = @{
         DC     = 'domainComponent'
         CN     = 'commonName'
         OU     = 'organizationalUnitName'
@@ -27,7 +27,7 @@ class RelativeDistinguishedName {
     }
     hidden Resolve () {
         $split = $this.RelativeDistinguishedName.split('=')
-        $this.typeString = $this.dictRDN.($split[0])
+        $this.typeString = [RelativeDistinguishedName]::dictRDN.($split[0])
         $this.type = $split[0]
         $this.value = $split[1]
     }
