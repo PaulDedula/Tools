@@ -27,6 +27,8 @@ class RelativeDistinguishedName {
     }
     hidden Resolve () {
         $split = $this.RelativeDistinguishedName.split('=')
+        if (-not($split.length -eq 2)) {throw "Invalid Relative Distinguished Name"}
+        if ($null -eq [RelativeDistinguishedName]::dictRDN?.($split[0])) {throw "RDN type [$($split[0])] not implemented"}
         $this.typeString = [RelativeDistinguishedName]::dictRDN.($split[0])
         $this.type = $split[0]
         $this.value = $split[1]
