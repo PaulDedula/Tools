@@ -1,9 +1,12 @@
+using namespace System
+using namespace System.Collections.Generic
+
 class RelativeDistinguishedName {
     [string]$type
     [string]$value
     [string]$typeString
-    [string]$RelativeDistinguishedName
-    hidden [int]$depth = 0
+    [string]$RDNString
+    [string]$RDNRawString
     static [hashtable]$dictRDN = @{
         DC     = 'domainComponent'
         CN     = 'commonName'
@@ -17,18 +20,14 @@ class RelativeDistinguishedName {
     }
     RelativeDistinguishedName () {}
     RelativeDistinguishedName ([string]$inputRDN) {
-        $this.RelativeDistinguishedName = $inputRDN
+        $this.RDNRawString = $inputRDN
         $this.Resolve()
-    }
-    RelativeDistinguishedName ([string]$inputRDN, [int]$depth) {
-        $this.RelativeDistinguishedName = $inputRDN
-        $this.depth = $depth ?? 0
-        $this.Resolve()
+        $this.RDNString = $this.ToString()
     }
     hidden Resolve () {
-        $split = $this.RelativeDistinguishedName.split('=')
-        if (-not($split.length -eq 2)) {throw "Invalid Relative Distinguished Name"}
-        if ($null -eq [RelativeDistinguishedName]::dictRDN?.($split[0])) {throw "RDN type [$($split[0])] not implemented"}
+        $split = $this.RDNRawString.split('=', [StringSplitOptions]::TrimEntries)
+        if (-not($split.length -eq 2)) { throw "Invalid Relative Distinguished Name" }
+        if ($null -eq [RelativeDistinguishedName]::dictRDN?.($split[0])) { throw "RDN type [$($split[0])] not implemented" }
         $this.typeString = [RelativeDistinguishedName]::dictRDN.($split[0])
         $this.type = $split[0]
         $this.value = $split[1]
@@ -43,38 +42,27 @@ class DistinguishedName {
     [RelativeDistinguishedName]$Name
     [RelativeDistinguishedName]$Parent
     [string]$ParentPath
-    [string]$DistinguishedName
+    [string]$DNString
     [RelativeDistinguishedName[]]$RDNSequence
-    hidden [int]$LenRDNSequence
-    hidden [int[]]$rangeRDNSequnce
+    [string]$DNRawString
     DistinguishedName () {}
     DistinguishedName ([string]$inputDN) {
-        $this.DistinguishedName = $inputDN
+        $this.DNRawString = $inputDN
         $this.Resolve()
+        $this.DNString = $this.ToString()
     }
     hidden Resolve () {
-        [System.Collections.Generic.List[string]]$dnList = $This.DistinguishedName.split(',').trim()
+        [List[string]]$dnList = $this.DNRawString.split(',', [StringSplitOptions]::TrimEntries)
         $this.Name = $dnList[0]
-        $this.RDNSequence = $dnList.ToArray().Trim().foreach({ [RelativeDistinguishedName]::new($_, $depth) ; $depth ++ })
+        $this.RDNSequence = $dnList.ToArray().foreach({ [RelativeDistinguishedName]::new($_) })
         if ($dnlist.Count -gt 1) { 
             $dnList.RemoveAt(0)
             $this.Parent = $dnList[0]
             $this.ParentPath = [string]::Join(',', $dnList)
         }
-        $this.LenRDNSequence = $this.RDNSequence.GetUpperBound(0)
-        $this.rangeRDNSequnce = (0..$this.LenRDNSequence)
-    }
-    [string] SubPath ([int]$start) {
-        if (-not($start -in $this.rangeRDNSequnce)) {throw "Starting position out of range"}
-        return [string]::Join(',',$this.RDNSequence[$start..$this.LenRDNSequence])
-    }
-    [string] SubPath ([int]$start, [int]$Stop) {
-        if (-not($start -in $this.rangeRDNSequnce)) {throw "Starting position out of range"}
-        if (-not($Stop -in $this.rangeRDNSequnce)) {throw "Terminating position out of range"}
-        return [string]::Join(',',$this.RDNSequence[$start..$Stop])
     }
     [string] ToString () {
-        return $this.DistinguishedName
+        return [string]::Join(',', $this.RDNSequence)
     }
 }
 
