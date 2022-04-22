@@ -1,5 +1,5 @@
 using namespace System.IO
-using namespace System.Management
+
 
 function Get-Files {
     <#
@@ -41,13 +41,13 @@ function Get-Files {
         [switch]$Recurse,
         [switch]$Parallel
     )
-    $enumOptions = [EnumerationOptions]::new()
+    $enumOptions = [System.IO.EnumerationOptions]::new()
     $enumOptions.IgnoreInaccessible = $true
     $enumOptions.RecurseSubdirectories = $Recurse
     if ($Parallel) {
-        $Include | ForEach-Object -Parallel { [system.io.Directory]::EnumerateFiles("$using:path", "$_", $using:enumOptions) }
+        $Include | ForEach-Object -Parallel { [System.IO.Directory]::EnumerateFiles("$using:path", "$_", $using:enumOptions) }
     }
     else {
-        $Include | ForEach-Object { [system.io.Directory]::EnumerateFiles("$path", "$_", $enumOptions) }
+        $Include | ForEach-Object { [System.IO.Directory]::EnumerateFiles("$path", "$_", $enumOptions) }
     }
 }
