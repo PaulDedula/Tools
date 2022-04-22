@@ -1,4 +1,5 @@
 using namespace System.IO
+using namespace System.Management
 
 function Get-Files {
     <#
@@ -49,5 +50,4 @@ function Get-Files {
     else {
         $Include | ForEach-Object { [system.io.Directory]::EnumerateFiles("$path", "$_", $enumOptions) }
     }
-
 }
