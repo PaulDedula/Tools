@@ -13,7 +13,7 @@ Converts a string distinguished name into a more usable object.
 ## SYNTAX
 
 ```
-ConvertFrom-DistinguishedName [-String] <String[]> [<CommonParameters>]
+ConvertFrom-DistinguishedName [-InputObject] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,34 +26,35 @@ with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt).
 ```powershell
 PS C:\> "CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com",[pscustomobject]@{distinguishedname = "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com"}  | ConvertFrom-DistinguishedName
 
-Name              : CN=Test User
-Parent            : OU=My Users
-ParentPath        : OU=My Users,CN=Users,DC=Example,DC=com
-DistinguishedName : CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com
-RDNSequence       : {CN=Test User, OU=My Users, CN=Users, DC=Example…}
+Name        : CN=Test User 
+Parent      : OU=My Users
+ParentPath  : OU=My Users,CN=Users,DC=Example,DC=com
+DNString    : CN=Test User,OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence : {CN=Test User, OU=My Users, CN=Users, DC=Example…}
+DNRawString : CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com
 
-Name              : CN=Paul Dedula
-Parent            : OU=My Users
-ParentPath        : OU=My Users,CN=Users,DC=Example,DC=com
-DistinguishedName : CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com
-RDNSequence       : {CN=Paul Dedula, OU=My Users, CN=Users, DC=Example…}
+Name        : CN=Paul Dedula
+Parent      : OU=My Users
+ParentPath  : OU=My Users,CN=Users,DC=Example,DC=com
+DNString    : CN=Paul Dedula,OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence : {CN=Paul Dedula, OU=My Users, CN=Users, DC=Example…}
+DNRawString : CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com
 ```
 
 Converts the input string or input object that has a distinguished name property to a distinguishedname object.
 
-
 ### Example 2
 ```powershell
 PS C:\> import-module Tools.ActiveDirectory
-PS C:\> ConvertFrom-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" | Select-Object -ExpandProperty RDNSequence
+PS C:\> ConvertFrom-DistinguishedName " CN = Paul Dedula, OU =   My Users,   CN   =    Users,   DC=Example,  DC  =com" | Select-Object -ExpandProperty RDNSequence | Format-Table
 
-type value       typeString             RelativeDistinguishedName
----- -----       ----------             -------------------------
-CN   Paul Dedula commonName             CN=Paul Dedula
-OU   My Users    organizationalUnitName OU=My Users
-CN   Users       commonName             CN=Users
-DC   Example     domainComponent        DC=Example
-DC   com         domainComponent        DC=com
+type value       typeString             RDNString      RDNRawString
+---- -----       ----------             ---------      ------------
+CN   Paul Dedula commonName             CN=Paul Dedula CN = Paul Dedula
+OU   My Users    organizationalUnitName OU=My Users    OU =My Users
+CN   Users       commonName             CN=Users       CN=Users
+DC   Example     domainComponent        DC=Example     DC=Example
+DC   com         domainComponent        DC=com         DC  =com
 ```
 
 Access the entire relative distinguished name sequence array.
