@@ -18,7 +18,14 @@ ConvertFrom-DistinguishedName [-InputObject] <String[]> [<CommonParameters>]
 
 ## DESCRIPTION
 Converts a string distinguished name into a more usable object. Not yet compliant
-with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt).
+with [RFC 4514](https://docs.ldap.com/specs/rfc4514.txt). Can only handle single
+valued RDNs:
+
+- Supported: UID=jsmith,DC=example,DC=net
+- Not Supported: OU=Sales+CN=J.  Smith,DC=example,DC=net
+- Not Supported: CN=James \"Jim\" Smith\, III,DC=example,DC=net
+- Not Supported: CN=Before\0dAfter,DC=example,DC=net
+
 
 ## EXAMPLES
 
