@@ -25,11 +25,12 @@ function Get-Files {
         Return: 3308 files (414 MB) 
         Scope of search: 77,000 files (13 GB)
         Seconds Command
-        36      Get-Childitem -Path C:\users\paul.dedula\ -Include "*.csv","*.txt","*.ps1" -Recurse
-        8       "*.csv","*.txt","*.ps1" | ForEach-Object { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse}}
-        4       Get-Files -Path C:\users\paul.dedula\ -Include "*.csv","*.txt","*.ps1" -Recurse
-        3       "*.csv","*.txt","*.ps1" | ForEach-Object -Parallel { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse} }
-        1       Get-Files -Path C:\users\paul.dedula\ -Include "*.csv","*.txt","*.ps1" -Recurse -Parallel
+
+        36      Get-Childitem -Path C:\users\pauld\ -Include "*.csv","*.txt","*.ps1" -Recurse
+        8       "*.csv","*.txt","*.ps1" | ForEach-Object { Get-Childitem -Path C:\users\pauld\ -Filter $_ -Recurse}}
+        4       Get-Files -Path C:\users\pauld\ -Include "*.csv","*.txt","*.ps1" -Recurse
+        3       "*.csv","*.txt","*.ps1" | ForEach-Object -Parallel { Get-Childitem -Path C:\users\pauld\ -Filter $_ -Recurse} }
+        1       Get-Files -Path C:\users\pauld\ -Include "*.csv","*.txt","*.ps1" -Recurse -Parallel
 
     #>
     [CmdletBinding()]
