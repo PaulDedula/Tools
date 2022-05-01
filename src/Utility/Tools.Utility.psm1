@@ -1,9 +1,4 @@
 class MarkDownTable {
-    [string[]]$MarkDownTable
-    MarkDownTable () {}
-    MarkDownTable ($AnyObject) {
-        $this.MarkDownTable = [MarkDownTable]::FromObject($AnyObject)
-    }
     static [string[]] FromObject ($AnyObject) {
         return [MarkDownTable]::FromCSV(($AnyObject | ConvertTo-Csv -Delimiter "က" ))
     }
@@ -23,9 +18,6 @@ class MarkDownTable {
         $divider = "|---|"
         $adder = "---|"        
         return $numberOfColumns -lt 1 ? $divider : $divider + ($adder * $numberOfColumns)
-    }
-    [string[]] Tostring () {
-        return $this.MarkDownTable
     }
 }
 
