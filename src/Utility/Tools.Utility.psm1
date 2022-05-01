@@ -1,22 +1,26 @@
 class MarkDownTable {
     static [string[]] FromObject ($AnyObject) {
-        return [MarkDownTable]::FromCSV(($AnyObject | ConvertTo-Csv -Delimiter "က" ))
+        return [MarkDownTable]::FromCSV(($AnyObject | ConvertTo-Csv -Delimiter "|" ))
     }
     static [string[]] FromCSV ($csv) {
-        # Assumes a delimiter of `u{1000}.
-        $d = 'က'
-        return [MarkDownTable]::FromCSV($csv, $d)
-    }
-    static [string[]] FromCSV ($csv, $delimiter) {
-        [System.Collections.Generic.List[string]]$output = $csv -replace "^|$|$delimiter", "|" -replace '"', ''     
+        <#
+        Must input pipe-delimited CSV
+        Add | to begining and end of lines, then remove quotes.
+        #>
+        [System.Collections.Generic.List[string]]$output = $csv -replace "^|$", "|" -replace '"', ''     
         $pipeCount = ($output[0] | select-string -Pattern "\|" -AllMatches).Matches.Count
         $output.insert(1, [MarkDownTable]::dividerBuilder($pipeCount))
         return $output
     }
     static [string] dividerBuilder ($pipes) {
+        <#
+        The CSV header contains columns: Npipes-1.
+        The output will always contain 1 column so: Npipes-2 will determine the number of
+        adder sections needed.
+        #>
         $numberOfColumns = $pipes - 2
-        $divider = "|---|"
-        $adder = "---|"        
+        $divider = "|:---|"
+        $adder = ":---|"        
         return $numberOfColumns -lt 1 ? $divider : $divider + ($adder * $numberOfColumns)
     }
 }
@@ -34,29 +38,29 @@ function ConvertTo-MarkDownTable {
     .EXAMPLE
         PS C:\> Get-Item C:\temp | Select-Object mode,lastwritetime,length,name| ConvertTo-MarkDownTable
         |Mode|LastWriteTime|length|Name|
-        |---|---|---|---|
-        |d----|4/30/2022 1:26:44 PM||Temp|
+        |:----|:----|:----|:----|
+        |d----|5/1/2022 1:15:02 PM||Temp|
         
         Converts the object to a MarkDownTable
     .EXAMPLE
         PS C:\> Get-Item C:\temp | Select-Object mode,lastwritetime,length,name| ConvertTo-MarkDownTable | clip
         |Mode|LastWriteTime|length|Name|
-        |---|---|---|---|
-        |d----|4/30/2022 1:26:44 PM||Temp|
+        |:----|:----|:----|:----|
+        |d----|5/1/2022 1:15:02 PM||Temp|
         
         Converts the object to a MarkDownTable and places it on the clipboard.
     .EXAMPLE
         PS C:\> $output = Get-Item C:\temp | Select-Object mode,lastwritetime,length,name
         PS C:\> ConvertTo-MarkDownTable $output
         |Mode|LastWriteTime|length|Name|
-        |---|---|---|---|
-        |d----|4/30/2022 1:26:44 PM||Temp|
+        |:----|:----|:----|:----|
+        |d----|5/1/2022 1:15:02 PM||Temp|
         
         Converts the object to a MarkDownTable
     .INPUTS
         Object[]
     .OUTPUTS
-        Table
+        String[]
     .NOTES
         Needed a quick way of copying PowerShell output to Markdown notes.
         I found Markdown tables were a bit nicer than doing backtick
