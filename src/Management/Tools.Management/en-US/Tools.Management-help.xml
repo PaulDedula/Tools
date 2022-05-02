@@ -81,20 +81,32 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-EmptyDirectories</command:name>
+      <command:name>Get-Files</command:name>
       <command:verb>Get</command:verb>
-      <command:noun>EmptyDirectories</command:noun>
+      <command:noun>Files</command:noun>
       <maml:description>
-        <maml:para>{{ Fill in the Synopsis }}</maml:para>
+        <maml:para>A faster way of getting a list of file fullnames</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>{{ Fill in the Description }}</maml:para>
+      <maml:para>A faster way of getting a list of file fullnames. Get-ChildItem is an amazing multi-use cmdlet, however it's output datatype is far richer than required sometimes. This function will return a list of file fullnames without the  overhead of constructing [DirectoryInfo] and [FileInfo] objects. Based on the .NET System.Net.Directory.EnumerateFiles method. Optional multithreading available with -Parallel. Not reccomended for  small file system; it's just not necessary and slower in that scenario.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-EmptyDirectories</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Get-Files</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Include Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>*</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
             <maml:para>{{ Fill Path Description }}</maml:para>
@@ -106,10 +118,44 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Recurse Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Parallel</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Parallel Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Include Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>*</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
           <maml:para>{{ Fill Path Description }}</maml:para>
@@ -121,38 +167,46 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Recurse Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Parallel</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Parallel Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
+    <command:inputTypes />
+    <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Benchmarks:</maml:para>
+        <maml:para>Scenario: Enumerate list of fullnames for " .csv"," .txt","*.ps1" in $home Return: 3308 files (414 MB)  Scope of search: 77,000 files (13 GB) Seconds Command 36      Get-Childitem -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse 8       " .csv"," .txt","*.ps1" | ForEach-Object { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse}} 4       Get-Files -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse 3       " .csv"," .txt","*.ps1" | ForEach-Object -Parallel { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse} } 1       Get-Files -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse -Parallel</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; {{ Add example code here }}</dev:code>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Get-Files -Path C:\temp -Include "*.csv","*.txt","*.ps1"
+Get's the fullname for all files in the C:\temp directory that match the include filter.</dev:code>
         <dev:remarks>
-          <maml:para>{{ Add example description here }}</maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -160,20 +214,32 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-EmptyDirectories</command:name>
+      <command:name>Get-Folders</command:name>
       <command:verb>Get</command:verb>
-      <command:noun>EmptyDirectories</command:noun>
+      <command:noun>Folders</command:noun>
       <maml:description>
-        <maml:para>{{ Fill in the Synopsis }}</maml:para>
+        <maml:para>A faster way of getting a list of file fullnames</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>{{ Fill in the Description }}</maml:para>
+      <maml:para>A faster way of getting a list of file fullnames. Get-ChildItem is an amazing multi-use cmdlet, however it's output datatype is far richer than required sometimes. This function will return a list of file fullnames without the  overhead of constructing [DirectoryInfo] and [FileInfo] objects. Based on the .NET System.Net.Directory.EnumerateFiles method. Optional multithreading available with -Parallel. Not reccomended for  small file system; it's just not necessary and slower in that scenario.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-EmptyDirectories</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Get-Folders</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Include Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>*</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
             <maml:para>{{ Fill Path Description }}</maml:para>
@@ -185,10 +251,44 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Recurse Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Parallel</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Parallel Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Include Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>*</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
           <maml:para>{{ Fill Path Description }}</maml:para>
@@ -200,38 +300,46 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Recurse Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Parallel</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Parallel Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
+    <command:inputTypes />
+    <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Benchmarks:</maml:para>
+        <maml:para>Scenario: Enumerate list of fullnames for " .csv"," .txt","*.ps1" in $home Return: 3308 files (414 MB)  Scope of search: 77,000 files (13 GB) Seconds Command 36      Get-Childitem -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse 8       " .csv"," .txt","*.ps1" | ForEach-Object { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse}} 4       Get-Files -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse 3       " .csv"," .txt","*.ps1" | ForEach-Object -Parallel { Get-Childitem -Path C:\users\paul.dedula\ -Filter $_ -Recurse} } 1       Get-Files -Path C:\users\paul.dedula\ -Include " .csv"," .txt","*.ps1" -Recurse -Parallel 36      Get-Childitem -Path C:\users\pauld\ -Include " .csv"," .txt","*.ps1" -Recurse 8       " .csv"," .txt","*.ps1" | ForEach-Object { Get-Childitem -Path C:\users\pauld\ -Filter $_ -Recurse}} 4       Get-Files -Path C:\users\pauld\ -Include " .csv"," .txt","*.ps1" -Recurse 3       " .csv"," .txt","*.ps1" | ForEach-Object -Parallel { Get-Childitem -Path C:\users\pauld\ -Filter $_ -Recurse} } 1       Get-Files -Path C:\users\pauld\ -Include " .csv"," .txt","*.ps1" -Recurse -Parallel</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; {{ Add example code here }}</dev:code>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Get-Files -Path C:\temp -Include "*.csv","*.txt","*.ps1"
+Get's the fullname for all files in the C:\temp directory that match the include filter.</dev:code>
         <dev:remarks>
-          <maml:para>{{ Add example description here }}</maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
