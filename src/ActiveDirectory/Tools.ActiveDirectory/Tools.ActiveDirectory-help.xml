@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ConvertFrom-DistinguishedName</command:name>
+      <command:verb>ConvertFrom</command:verb>
+      <command:noun>DistinguishedName</command:noun>
+      <maml:description>
+        <maml:para>Converts a string distinguished name into a more usable object.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Converts a string distinguished name into a more usable object. Not yet compliant with RFC 4514 (https://docs.ldap.com/specs/rfc4514.txt). Can only handle single valued RDNs:</maml:para>
+      <maml:para>- Supported: UID=jsmith,DC=example,DC=net</maml:para>
+      <maml:para>- Not Supported: OU=Sales+CN=J.  Smith,DC=example,DC=net</maml:para>
+      <maml:para>- Not Supported: CN=James \"Jim\" Smith\, III,DC=example,DC=net</maml:para>
+      <maml:para>- Not Supported: CN=Before\0dAfter,DC=example,DC=net</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ConvertFrom-DistinguishedName</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="DistinguishedName">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>The input string or input object that has a distinguished name property</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="DistinguishedName">
+        <maml:name>InputObject</maml:name>
+        <maml:description>
+          <maml:para>The input string or input object that has a distinguished name property</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>DistinguishedName[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Special character support not tested. Not yet compliant with RFC 4514 (https://docs.ldap.com/specs/rfc4514.txt)</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; "CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com",[pscustomobject]@{distinguishedname = "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com"}  | ConvertFrom-DistinguishedName
+
+Name        : CN=Test User 
+Parent      : OU=My Users
+ParentPath  : OU=My Users,CN=Users,DC=Example,DC=com
+DNString    : CN=Test User,OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence : {CN=Test User, OU=My Users, CN=Users, DC=Example…}
+DNRawString : CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com
+
+Name        : CN=Paul Dedula
+Parent      : OU=My Users
+ParentPath  : OU=My Users,CN=Users,DC=Example,DC=com
+DNString    : CN=Paul Dedula,OU=My Users,CN=Users,DC=Example,DC=com
+RDNSequence : {CN=Paul Dedula, OU=My Users, CN=Users, DC=Example…}
+DNRawString : CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com</dev:code>
+        <dev:remarks>
+          <maml:para>Converts the input string or input object that has a distinguished name property to a distinguishedname object.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; import-module Tools.ActiveDirectory
+PS C:\&gt; ConvertFrom-DistinguishedName " CN = Paul Dedula, OU =   My Users,   CN   =    Users,   DC=Example,  DC  =com" | Select-Object -ExpandProperty RDNSequence | Format-Table
+
+type value       typeString             RDNString      RDNRawString
+---- -----       ----------             ---------      ------------
+CN   Paul Dedula commonName             CN=Paul Dedula CN = Paul Dedula
+OU   My Users    organizationalUnitName OU=My Users    OU =My Users
+CN   Users       commonName             CN=Users       CN=Users
+DC   Example     domainComponent        DC=Example     DC=Example
+DC   com         domainComponent        DC=com         DC  =com</dev:code>
+        <dev:remarks>
+          <maml:para>Access the entire relative distinguished name sequence array.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; using module Tools.ActiveDirectory
+PS C:\&gt; $DNObject = [DistinguishedName]"CN=Test User, OU=My Users,CN=Users,DC=Example,DC=com"
+PS C:\&gt; $DNObject.ParentPath
+
+OU=My Users,CN=Users,DC=Example,DC=com</dev:code>
+        <dev:remarks>
+          <maml:para>Optionally, import and use the custom class directly with a `using` statement.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 4 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $DNObject = ConvertFrom-DistinguishedName "CN=Paul Dedula, OU=My Users,CN=Users,DC=Example,DC=com" 
+PS C:\&gt; switch ($DNObject.RDNSequence[-1].type) {
+    OU { "I run when the RDN type is an organization unit" }
+    DC { "I run when the RDN type is a domainComponent" }
+    Default {}
+}
+
+"I run when the RDN type is a domainComponent"</dev:code>
+        <dev:remarks>
+          <maml:para>Perform a specific action based on the relative name type.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+</helpItems>

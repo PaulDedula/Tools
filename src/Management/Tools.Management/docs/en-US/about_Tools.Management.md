@@ -1,0 +1,38 @@
+# Tools.Management
+## about_Tools.Management
+
+# SHORT DESCRIPTION
+Supplements the Management module with additional functionality.
+
+
+# LONG DESCRIPTION
+This is an organically growing module that supplements the PowerShell's 
+management module with additional functionality. Including format data, type data, 
+classes, and functions.
+
+## Optional Subtopics
+{{ Optional Subtopic Placeholder }}
+
+# EXAMPLES
+{{ Code or descriptive examples of how to leverage the functions described. }}
+
+# NOTE
+{{ Note Placeholder - Additional information that a user needs to know.}}
+
+# TROUBLESHOOTING NOTE
+{{ Troubleshooting Placeholder - Warns users of bugs}}
+
+{{ Explains behavior that is likely to change with fixes }}
+
+# SEE ALSO
+{{ See also placeholder }}
+
+{{ You can also list related articles, blogs, and video URLs. }}
+
+# KEYWORDS
+{{List alternate names or titles for this topic that readers might use.}}
+
+- {{ Keyword Placeholder }}
+- {{ Keyword Placeholder }}
+- {{ Keyword Placeholder }}
+- {{ Keyword Placeholder }}
