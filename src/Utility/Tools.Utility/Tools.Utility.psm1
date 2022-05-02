@@ -26,6 +26,7 @@ class MarkDownTable {
 }
 
 
+#.EXTERNALHELP Tools.Utility-help.xml
 function ConvertTo-MarkDownTable {
     <#
     .SYNOPSIS

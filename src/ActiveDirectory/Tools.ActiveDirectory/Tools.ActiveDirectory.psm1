@@ -51,6 +51,7 @@ class DistinguishedName {
     }
 }
 
+#.EXTERNALHELP Tools.ActiveDirectory-help.xml
 function ConvertFrom-DistinguishedName {
     [CmdletBinding()]
     param (

@@ -2,7 +2,7 @@ using namespace System.IO
 using namespace System.Linq
 # Testing way to find empty folders on large file system.
 
-#.EXTERNALHELP .\docs\en-us\Tools.Management-help.xml
+#.EXTERNALHELP Tools.Management-help.xml
 function Get-EmptyDirectories {
     [CmdletBinding()]
     param (
@@ -24,7 +24,7 @@ function Get-EmptyDirectories {
     }
 }
 
-#.EXTERNALHELP .\docs\en-us\Tools.Management-help.xml
+#.EXTERNALHELP Tools.Management-help.xml
 function Get-Files {
     [CmdletBinding()]
     param (
@@ -46,7 +46,7 @@ function Get-Files {
     }
 }
 
-#.EXTERNALHELP .\docs\en-us\Tools.Management-help.xml
+#.EXTERNALHELP Tools.Management-help.xml
 function Get-Folders {
     [CmdletBinding()]
     param (
