@@ -4,6 +4,8 @@ Param (
 
 $Modules = Get-ChildItem $PSScriptRoot -filter *.psm1 -Recurse
 
+
+#region Build and update help
 foreach ($m in $modules) {
     Import-module $m -Force
     $moduleRoot = Split-Path $m.FullName -Parent
@@ -13,9 +15,13 @@ foreach ($m in $modules) {
         New-MarkdownHelp -Module $m.BaseName -OutputPath $docsPath
         New-MarkdownAboutHelp -AboutName $m.BaseName -OutputFolder $docsPath
     }
-    # Run tests
-    # Update MD docs
-    # Build ExternalHelp
+
     Update-MarkdownHelp -Path $docsPath
     New-ExternalHelp -Path $docsPath -OutputPath $docsPath -Force
 }
+#endregion
+
+
+# Run tests
+# Update MD docs
+# Build ExternalHelp
