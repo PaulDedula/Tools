@@ -28,46 +28,6 @@ class MarkDownTable {
 
 #.EXTERNALHELP Tools.Utility-help.xml
 function ConvertTo-MarkDownTable {
-    <#
-    .SYNOPSIS
-        Basic way to output a markdown table.
-    .DESCRIPTION
-        Basic way to output a markdown table. Doesn't support much and has
-        issues with constructing huge tables (get-process). It relies mainly
-        on ConvertTo-Csv, then tweaks the output to turn it into a markdown
-        table.
-    .EXAMPLE
-        PS C:\> Get-Item C:\temp | Select-Object mode,lastwritetime,length,name| ConvertTo-MarkDownTable
-        |Mode|LastWriteTime|length|Name|
-        |:----|:----|:----|:----|
-        |d----|5/1/2022 1:15:02 PM||Temp|
-        
-        Converts the object to a MarkDownTable
-    .EXAMPLE
-        PS C:\> Get-Item C:\temp | Select-Object mode,lastwritetime,length,name| ConvertTo-MarkDownTable | clip
-        |Mode|LastWriteTime|length|Name|
-        |:----|:----|:----|:----|
-        |d----|5/1/2022 1:15:02 PM||Temp|
-        
-        Converts the object to a MarkDownTable and places it on the clipboard.
-    .EXAMPLE
-        PS C:\> $output = Get-Item C:\temp | Select-Object mode,lastwritetime,length,name
-        PS C:\> ConvertTo-MarkDownTable $output
-        |Mode|LastWriteTime|length|Name|
-        |:----|:----|:----|:----|
-        |d----|5/1/2022 1:15:02 PM||Temp|
-        
-        Converts the object to a MarkDownTable
-    .INPUTS
-        Object[]
-    .OUTPUTS
-        String[]
-    .NOTES
-        Needed a quick way of copying PowerShell output to Markdown notes.
-        I found Markdown tables were a bit nicer than doing backtick
-        code blocks in some cases.
-        Will likely switch to Markdig Markdown at some point.
-    #>
     [CmdletBinding()]
     param (
         # Any Other Object
