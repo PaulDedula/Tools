@@ -1,0 +1,32 @@
+config:
+    - testSubject: 
+      - FriendlyName: 'Google DNS'
+      - Network: 
+        - IPAddress: 8.8.8.8
+          Port: 53
+        - IPAddress: 8.8.4.4
+          Port: 53
+        - IPAddress: 8.8.4.4
+      - NameRecords:
+        - Type: A
+          Name: example.com
+          Value: 93.184.216.34
+        - type: AAAA
+          Name: example.com
+          Value: 2606:2800:220:1:248:1893:25c8:1946
+      - Content:
+        - type: HTTP
+          Path: ''
+          UsingHostname: 'example.com'
+    - testSubject:
+      - FriendlyName: Local Computer
+      - Content:
+        - type: SMB
+          Path: '\C$\Temp'
+          UsingHostname: 'localhost'
+        - type: FileSystem
+          Path: 'C:\Temp\results.xml'
+        - type: Idon'tExist
+        - Path: '\C$$0'
+          
+ 
