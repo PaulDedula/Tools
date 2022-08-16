@@ -345,4 +345,128 @@ Get's the fullname for all files in the C:\temp directory that match the include
     </command:examples>
     <command:relatedLinks />
   </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-FileIndex</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>FileIndex</command:noun>
+      <maml:description>
+        <maml:para>Builds an index of a filesystem for fast and efficient name-to-path lookups.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function converts the target filesystem into a hashtable of filename  to fullname mappings. Helpful for when you have a known file name but not a known location. By using a single recursive search, this may dramtically improve performance of the script.</maml:para>
+      <maml:para>IE:  - invoices/files with a structured naming convention</maml:para>
+      <maml:para>- a list of filenames in application logs without the full path information</maml:para>
+      <maml:para>- general need for a list of leaf and fullnames for export</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-FileIndex</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Include only files that match the specified pattern. (non-regex).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>*</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>RegexMask</maml:name>
+          <maml:description>
+            <maml:para>An optional mask to help cleanup `Keys` prior to adding to the hash table.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>The path at which to begin recusively building the index hash table.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$pwd.path</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>Include only files that match the specified pattern. (non-regex).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>*</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>RegexMask</maml:name>
+        <maml:description>
+          <maml:para>An optional mask to help cleanup `Keys` prior to adding to the hash table.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>The path at which to begin recusively building the index hash table.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$pwd.path</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $invoiceIndex = New-FileIndex -Path C:\temp\test\invoices -Include '*.pdf'
+PS C:\&gt; $invoiceIndex['invoice_91.pdf']
+C:\temp\test\invoice_91.pdf</dev:code>
+        <dev:remarks>
+          <maml:para>The index is stored in the variable `$invoiceIndex`. After the initial building of the index, the search for 'invoice_91.pdf' is nearly instantaneous.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $invoiceIndex = New-FileIndex -Path C:\temp\test -Include '*.pdf' -RegexMask "invoice\D+"
+PS C:\&gt; $invoiceIndex['184.pdf'] -split ";"
+C:\temp\test\invoice_184.pdf
+C:\temp\test\invoice_reissued_184.pdf</dev:code>
+        <dev:remarks>
+          <maml:para>The hash lookup for '184.pdf' returns a semicolon-delimited multivalue string.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
 </helpItems>
