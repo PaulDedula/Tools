@@ -1,3 +1,5 @@
+using namespace System.Collections.generic
+
 class MarkDownTable {
     static [string[]] FromObject ($AnyObject) {
         return [MarkDownTable]::FromCSV(($AnyObject | ConvertTo-Csv -Delimiter "|" ))
@@ -42,5 +44,33 @@ function ConvertTo-MarkDownTable {
     }
     End {
         return [MarkDownTable]::FromObject($buffer.ToArray())
+    }
+}
+
+function ConvertTo-Dictionary {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline)]
+        [object[]]$InputObject,
+        [Parameter()]
+        [string]$KeyProperty
+    )
+    begin {
+        $Dictionary = [Dictionary[string,[List[Object]]]]::new()
+    }
+    process {
+        foreach ($obj in $InputObject) {
+            $key = $obj.$KeyProperty
+            if ($Dictionary.ContainsKey($key)) {
+                $Dictionary[$key].Add($obj)
+            } else {
+                $value = [List[Object]]::new()
+                $value.Add($obj)
+                $Dictionary.Add($key,$value)
+            }
+        }
+    }
+    end {
+        return $Dictionary
     }
 }
